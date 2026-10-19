@@ -1,7 +1,7 @@
 package com.example.backend.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
@@ -14,11 +14,11 @@ public class Author {
     private UUID id;
 
     @Column(nullable = false)
-    @Max(50)
+    @Size(max = 50)
     private String firstName;
 
     @Column(nullable = false)
-    @Max(50)
+    @Size(max = 50)
     private String lastName;
 
     public Author() {

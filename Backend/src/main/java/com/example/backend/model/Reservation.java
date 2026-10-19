@@ -14,18 +14,16 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private UUID userId;
 
     @Column(nullable = false)
     private String status;
 
-    @Column(nullable = false)
-    @FutureOrPresent
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    @FutureOrPresent
+    @Column(nullable = true)
     private LocalDateTime confirmedAt;
 
     public Reservation() {

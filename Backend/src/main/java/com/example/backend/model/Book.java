@@ -1,23 +1,22 @@
 package com.example.backend.model;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "books")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private String isbn;
 
     @Column(nullable = false)
-    @Max(100)
+    @Size(max = 100)
     private String title;
 
     @Column(nullable = false)
-    @Max(500)
+    @Size(max = 500)
     private String description;
 
     @Column(nullable = false)

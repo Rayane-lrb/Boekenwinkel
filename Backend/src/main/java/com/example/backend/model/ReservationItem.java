@@ -13,10 +13,10 @@ public class ReservationItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private UUID reservationId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String isbn;
 
     @Column(nullable = false)
