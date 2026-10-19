@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Max;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID isbn;
+    private String isbn;
 
     @Column(nullable = false)
     @Max(100)
@@ -28,7 +28,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(UUID isbn, String title, String description, BigDecimal price, int stock) {
+    public Book(String isbn, String title, String description, BigDecimal price, int stock) {
         this.isbn = isbn;
         this.title = title;
         this.description = description;
@@ -36,11 +36,11 @@ public class Book {
         this.stock = stock;
     }
 
-    public UUID getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(UUID isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
