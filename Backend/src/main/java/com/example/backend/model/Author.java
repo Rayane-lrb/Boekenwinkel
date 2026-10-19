@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import java.util.UUID;
 
 @Entity
+@Table(name = "authors")
 public class Author {
 
     @Id

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
+@Table(name = "reservation_items")
 public class ReservationItem {
 
     @Id
