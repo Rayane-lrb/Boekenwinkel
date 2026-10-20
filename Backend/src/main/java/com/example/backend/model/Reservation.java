@@ -17,9 +17,6 @@ public class Reservation {
     private UUID id;
 
     @Column(nullable = false)
-    private UUID userId;
-
-    @Column(nullable = false)
     private String status;
 
     @Column(nullable = false, updatable = false)
@@ -32,15 +29,14 @@ public class Reservation {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "reservations", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<ReservationItem> reservationItems = new ArrayList<>();
 
     public Reservation() {
     }
 
-    public Reservation(UUID id, UUID userId, String status, LocalDateTime createdAt, LocalDateTime confirmedAt) {
+    public Reservation(UUID id, String status, LocalDateTime createdAt, LocalDateTime confirmedAt) {
         this.id = id;
-        this.userId = userId;
         this.status = status;
         this.createdAt = createdAt;
         this.confirmedAt = confirmedAt;
@@ -52,14 +48,6 @@ public class Reservation {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
     }
 
     public String getStatus() {

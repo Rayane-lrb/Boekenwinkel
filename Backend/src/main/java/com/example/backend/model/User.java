@@ -31,10 +31,10 @@ public class User {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
     public User() {

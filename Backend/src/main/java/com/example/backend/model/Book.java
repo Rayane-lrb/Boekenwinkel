@@ -29,11 +29,10 @@ public class Book {
     @Column(nullable = false)
     private int stock;
 
-    @ManyToOne
-    @JoinColumn(name = "isbn", referencedColumnName = "isbn", nullable = false)
-    private ReservationItem reservationItem;
+    @OneToMany(mappedBy = "book")
+    private List<ReservationItem> reservationItems;
 
-    @OneToMany(mappedBy = "books")
+    @OneToMany(mappedBy = "book")
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToMany

@@ -14,14 +14,6 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull(message = "A user id is needed")
-    private UUID userId;
-
-    @NotBlank(message = "A book isbn is needed")
-    @Column(nullable = false)
-    private String isbn;
-
-
     @NotBlank(message = "A rating is needed")
     @Min(value = 1, message = "Score must be at least 1")
     @Max(value = 5, message = "Score must be at most 5")
@@ -44,10 +36,8 @@ public class Review {
     public Review() {
     }
 
-    public Review(UUID id, UUID userId, String isbn, int score, String text, LocalDateTime createdAt) {
+    public Review(UUID id, int score, String text, LocalDateTime createdAt) {
         this.id = id;
-        this.userId = userId;
-        this.isbn = isbn;
         this.score = score;
         this.text = text;
         this.createdAt = createdAt;
@@ -59,22 +49,6 @@ public class Review {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
     }
 
     public int getScore() {
