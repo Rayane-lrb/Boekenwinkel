@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +30,9 @@ public class User {
 
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations = new ArrayList<Reservation>();
 
     public User() {
     }
