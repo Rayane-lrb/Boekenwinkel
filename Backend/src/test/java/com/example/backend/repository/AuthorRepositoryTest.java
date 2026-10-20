@@ -46,4 +46,34 @@ class AuthorRepositoryTest {
         assertEquals("Tom", foundAuthor.get().getFirstName());
         assertEquals("Spow", foundAuthor.get().getLastName());
     }
+
+    @Test
+    public void updateAuthorExpectation() {
+        Author author = new Author();
+        author.setFirstName("Hamid");
+        author.setLastName("Bouzelouf");
+        authorRepository.saveAndFlush(author);
+        entityManager.clear();
+
+        Author toEdit = authorRepository.getById(author.getId());
+        toEdit.setFirstName("Samy");
+        toEdit.setLastName("Poppy");
+        authorRepository.saveAndFlush(toEdit);
+        entityManager.clear();
+
+        assertEquals("Samy", authorRepository.getById(author.getId()).getFirstName());
+        assertEquals("Poppy", authorRepository.getById(author.getId()).getLastName());
+    }
+
+    @Test
+    public void DeleteAuthorExpectation() {
+        Author author = new Author();
+        author.setFirstName("Marwan");
+        author.setLastName("panyan");
+        authorRepository.saveAndFlush(author);
+        entityManager.clear();
+
+        authorRepository.deleteById(author.getId());
+        assertFalse(authorRepository.existsById(author.getId()));
+    }
 }
