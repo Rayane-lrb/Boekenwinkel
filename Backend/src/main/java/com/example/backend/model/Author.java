@@ -1,12 +1,12 @@
 package com.example.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "authors")
 public class Author {
 
     @Id

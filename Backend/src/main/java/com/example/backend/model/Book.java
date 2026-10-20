@@ -1,15 +1,16 @@
 package com.example.backend.model;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "books")
 public class Book {
     @Id
     @Column(nullable = false, updatable = false)
-    private String isbn;
+    private UUID isbn;
 
     @Column(nullable = false)
     @Size(max = 100)
@@ -28,7 +29,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String isbn, String title, String description, BigDecimal price, int stock) {
+    public Book(UUID isbn, String title, String description, BigDecimal price, int stock) {
         this.isbn = isbn;
         this.title = title;
         this.description = description;
@@ -36,11 +37,11 @@ public class Book {
         this.stock = stock;
     }
 
-    public String getIsbn() {
+    public UUID getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
+    public void setIsbn(UUID isbn) {
         this.isbn = isbn;
     }
 
