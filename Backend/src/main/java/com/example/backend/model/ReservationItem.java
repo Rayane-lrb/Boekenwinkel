@@ -64,4 +64,20 @@ public class ReservationItem {
     public void setPriceAtReservation(BigDecimal priceAtReservation) {
         this.priceAtReservation = priceAtReservation;
     }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }

@@ -94,4 +94,28 @@ public class Book {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public List<ReservationItem> getReservationItems() {
+        return reservationItems;
+    }
+
+    public void setReservationItems(List<ReservationItem> reservationItems) {
+        this.reservationItems = reservationItems;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
 }

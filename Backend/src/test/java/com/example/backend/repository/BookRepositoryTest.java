@@ -33,7 +33,7 @@ class BookRepositoryTest {
     private BookRepository bookRepository;
 
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Test
     public void saveAndFindBookExpectation() {

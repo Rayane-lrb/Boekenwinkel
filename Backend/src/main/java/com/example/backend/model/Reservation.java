@@ -73,4 +73,20 @@ public class Reservation {
     public void setConfirmedAt(LocalDateTime confirmedAt) {
         this.confirmedAt = confirmedAt;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<ReservationItem> getReservationItems() {
+        return reservationItems;
+    }
+
+    public void setReservationItems(List<ReservationItem> reservationItems) {
+        this.reservationItems = reservationItems;
+    }
 }
