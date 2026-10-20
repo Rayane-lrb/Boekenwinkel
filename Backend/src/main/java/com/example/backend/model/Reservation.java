@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "reservations")
 public class Reservation {
 
     @Id
@@ -28,6 +31,9 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "reservations", cascade = CascadeType.ALL)
+    private List<ReservationItem> reservationItems = new ArrayList<>();
 
     public Reservation() {
     }

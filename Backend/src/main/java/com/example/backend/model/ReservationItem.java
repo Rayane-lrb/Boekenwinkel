@@ -7,9 +7,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "reservation_items")
 public class ReservationItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +29,13 @@ public class ReservationItem {
 
     @Column(nullable = false)
     private BigDecimal priceAtReservation;
+
+    @ManyToOne
+    @JoinColumn(name = "reservation_id", nullable = false)
+    private Reservation reservation;
+
+    @OneToMany(mappedBy = "reservation_items")
+    private List<Book> books = new ArrayList<>();
 
     public ReservationItem() {
     }

@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "authors")
 public class Author {
 
     @Id
@@ -20,6 +23,9 @@ public class Author {
     @Column(nullable = false)
     @Size(max = 50)
     private String lastName;
+
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books = new ArrayList<>();
 
     public Author() {
     }

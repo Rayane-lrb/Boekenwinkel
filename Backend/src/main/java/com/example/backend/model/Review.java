@@ -33,6 +33,14 @@ public class Review {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "isbn", referencedColumnName = "isbn", nullable = false)
+    private Book book;
+
     public Review() {
     }
 

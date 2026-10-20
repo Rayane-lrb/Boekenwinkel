@@ -31,8 +31,11 @@ public class User {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @OneToMany(mappedBy = "user")
-    private List<Reservation> reservations = new ArrayList<Reservation>();
+    @OneToMany(mappedBy = "users")
+    private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<Review> reviews = new ArrayList<>();
 
     public User() {
     }

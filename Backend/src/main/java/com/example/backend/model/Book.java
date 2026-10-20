@@ -1,12 +1,15 @@
 package com.example.backend.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "books")
 public class Book {
     @Id
     @Column(nullable = false, updatable = false)
@@ -25,6 +28,22 @@ public class Book {
 
     @Column(nullable = false)
     private int stock;
+
+    @ManyToOne
+    @JoinColumn(name = "isbn", referencedColumnName = "isbn", nullable = false)
+    private ReservationItem reservationItem;
+
+    @OneToMany(mappedBy = "books")
+    private List<Review> reviews = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_isbn"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private List<Author> authors = new ArrayList<>();
+
 
     public Book() {
     }
