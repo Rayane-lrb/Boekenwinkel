@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ReviewRequestDto {
 
+    @NotBlank(message = "Book ISBN is required")
+    private String bookIsbn;
+
     @NotBlank(message = "A rating is needed")
     @Min(value = 1, message = "Score must be at least 1")
     @Max(value = 5, message = "Score must be at most 5")
@@ -14,6 +17,14 @@ public class ReviewRequestDto {
     private String text;
 
     public ReviewRequestDto() {
+    }
+
+    public String getBookIsbn() {
+        return bookIsbn;
+    }
+
+    public void setBookIsbn(String bookIsbn) {
+        this.bookIsbn = bookIsbn;
     }
 
     public int getScore() {
