@@ -18,7 +18,7 @@ public class BookRequestDto {
     @NotBlank(message = "description cannot be blank")
     private String description;
 
-    @NotBlank(message = "Price cannot be blank")
+    @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
 
