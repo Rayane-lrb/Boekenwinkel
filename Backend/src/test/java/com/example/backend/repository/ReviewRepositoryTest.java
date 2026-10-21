@@ -43,7 +43,6 @@ class ReviewRepositoryTest {
 
     @Test
     public void saveAndFindReviewExpectation() {
-        // 1. Maak en bewaar de afhankelijke User en Book
         User user = new User();
         user.setEmail("reviewer@example.com");
         user.setPasswordHash("password123");
@@ -59,7 +58,6 @@ class ReviewRepositoryTest {
         book.setStock(15);
         book = bookRepository.save(book);
 
-        // 2. Maak en bewaar de Review
         Review review = new Review();
         review.setScore(5);
         review.setText("Fantastic book!");
@@ -70,7 +68,6 @@ class ReviewRepositoryTest {
         Review savedReview = reviewRepository.saveAndFlush(review);
         entityManager.clear();
 
-        // 3. Verifieer dat de review correct is opgeslagen en opgehaald
         Optional<Review> foundReview = reviewRepository.findById(savedReview.getId());
         assertTrue(foundReview.isPresent());
         assertEquals(5, foundReview.get().getScore());
