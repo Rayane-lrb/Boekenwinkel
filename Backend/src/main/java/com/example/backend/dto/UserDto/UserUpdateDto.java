@@ -14,7 +14,8 @@ public class UserUpdateDto {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    public UpdateUserDto() {}
+    public UserUpdateDto() {
+    }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
