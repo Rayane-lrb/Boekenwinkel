@@ -7,6 +7,8 @@ public record BookResponseDto(
         String title,
         String description,
         BigDecimal price,
-        int stock
+        int stock,
+        String authorFirstName,
+        String authorLastName
 ) {
 }

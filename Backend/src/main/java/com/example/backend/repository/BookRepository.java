@@ -13,5 +13,4 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("SELECT b FROM Book b WHERE b.price BETWEEN :min AND :max")
     List<Book> searchByPrice(float min, float max);
 
-
 }

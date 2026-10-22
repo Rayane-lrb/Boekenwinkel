@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class BookRequestDto {
 
@@ -24,6 +25,9 @@ public class BookRequestDto {
 
     @Positive(message = "Stock must be positive")
     private int Stock;
+
+    @NotNull(message = "Author ID is required")
+    private UUID authorId;
 
     public BookRequestDto() {
     }
@@ -66,5 +70,13 @@ public class BookRequestDto {
 
     public void setStock(int stock) {
         Stock = stock;
+    }
+
+    public UUID getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(UUID authorId) {
+        this.authorId = authorId;
     }
 }
