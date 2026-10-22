@@ -16,8 +16,8 @@ import java.util.UUID;
 @Transactional
 public class BookService {
 
-    private AuthorRepository authorRepository;
-    private BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
     public BookService(AuthorRepository authorRepository, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
@@ -82,7 +82,6 @@ public class BookService {
 
     public void deleteBook(String isbn) {
         Book book = findBookOrThrow(isbn);
-
         bookRepository.delete(book);
     }
 
@@ -109,7 +108,5 @@ public class BookService {
                 author != null ? author.getLastName() : "Unknown"
         );
     }
-
-
 
 }
