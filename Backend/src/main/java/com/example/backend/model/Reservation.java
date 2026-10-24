@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.example.backend.dto.ReservationItemDto.ReservationItemResponseDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 
@@ -30,7 +31,7 @@ public class Reservation {
     private User user;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private List<ReservationItem> reservationItems = new ArrayList<>();
+    private List<ReservationItemResponseDto> reservationItems = new ArrayList<>();
 
     public Reservation() {
     }
@@ -82,11 +83,11 @@ public class Reservation {
         this.user = user;
     }
 
-    public List<ReservationItem> getReservationItems() {
+    public List<ReservationItemResponseDto> getReservationItems() {
         return reservationItems;
     }
 
-    public void setReservationItems(List<ReservationItem> reservationItems) {
+    public void setReservationItems(List<ReservationItemResponseDto> reservationItems) {
         this.reservationItems = reservationItems;
     }
 }
