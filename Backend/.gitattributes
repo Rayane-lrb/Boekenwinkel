@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 Backend/mvnw text eol=lf
 Backend/mvnw.cmd text eol=crlf
-=======
-/mvnw text eol=lf
-*.cmd text eol=crlf
->>>>>>> aa7a74b (feat: Book repository)
