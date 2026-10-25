@@ -31,36 +31,36 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<UserResponseDto> getUserById(UUID userId) {
+    ResponseEntity<UserResponseDto> getUserById(@RequestParam UUID userId) {
         UserResponseDto user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> addUser(UserRegisterDto dto) {
+    public ResponseEntity<UserResponseDto> addUser(@RequestParam UserRegisterDto dto) {
         UserResponseDto user = userRegisterService.resgisterUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> editUser(UUID userId, UserUpdateDto dto) {
+    public ResponseEntity<UserResponseDto> editUser(@RequestParam UUID userId, @RequestParam UserUpdateDto dto) {
         UserResponseDto updatedUser = userService.updateUser(userId, dto);
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(UUID userId) {
+    public ResponseEntity<String> deleteUser(@RequestParam UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> promoteUser(UUID userId) {
+    public ResponseEntity<String> promoteUser(@RequestParam UUID userId) {
         userService.promoteUser(userId);
         return ResponseEntity.ok("User promoted to admin successfully");
     }
     @PutMapping("/{id}")
-    public ResponseEntity<String> demoteUser(UUID userId) {
+    public ResponseEntity<String> demoteUser(@RequestParam UUID userId) {
         userService.demoteUser(userId);
         return ResponseEntity.ok("User demoted successfully");
     }

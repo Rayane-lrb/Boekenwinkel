@@ -27,25 +27,25 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AuthorResponseDto> getAuthorById(UUID authorId) {
+    public ResponseEntity<AuthorResponseDto> getAuthorById(@RequestParam UUID authorId) {
         AuthorResponseDto author = authorService.getAuthorById(authorId);
         return ResponseEntity.ok(author);
     }
 
     @PostMapping
-    public ResponseEntity<AuthorResponseDto> addAuthor(AuthorRequestDto dto) {
+    public ResponseEntity<AuthorResponseDto> addAuthor(@RequestParam AuthorRequestDto dto) {
         AuthorResponseDto author = authorService.createAuthor(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(author);
     }
 
     @PutMapping
-    public ResponseEntity<AuthorResponseDto> editAuthor(UUID authorId, AuthorRequestDto dto) {
+    public ResponseEntity<AuthorResponseDto> editAuthor(@RequestParam UUID authorId, @RequestParam AuthorRequestDto dto) {
         AuthorResponseDto updatedAuthor = authorService.updateAuthor(authorId, dto);
         return ResponseEntity.ok(updatedAuthor);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteAuthor(UUID userId) {
+    public ResponseEntity<String> deleteAuthor(@RequestParam UUID userId) {
         authorService.deleteAuthor(userId);
         return ResponseEntity.ok("Deleted author successfully");
     }

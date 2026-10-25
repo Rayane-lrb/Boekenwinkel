@@ -29,25 +29,25 @@ public class ReservationItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservationItemResponseDto> getReservationItemById(UUID reservationItemId) {
+    public ResponseEntity<ReservationItemResponseDto> getReservationItemById(@RequestParam UUID reservationItemId) {
         ReservationItemResponseDto reservation = reservationItemService.getReservationItemById(reservationItemId);
         return ResponseEntity.ok(reservation);
     }
 
     @PostMapping
-    public ResponseEntity<ReservationItemResponseDto> addReservationItem(ReservationItemRequestDto dto) {
+    public ResponseEntity<ReservationItemResponseDto> addReservationItem(@RequestParam ReservationItemRequestDto dto) {
         ReservationItemResponseDto reservationItem = reservationItemService.createReservationItem(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationItem);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationItemResponseDto> editReservationItem(UUID reservationItemId, ReservationItemRequestDto dto) {
+    public ResponseEntity<ReservationItemResponseDto> editReservationItem(@RequestParam UUID reservationItemId, @RequestParam ReservationItemRequestDto dto) {
         ReservationItemResponseDto updatedReservationItem = reservationItemService.updateReservationItem(reservationItemId, dto);
         return ResponseEntity.ok(updatedReservationItem);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReservationItem(UUID reservationItemId) {
+    public ResponseEntity<String> deleteReservationItem(@RequestParam UUID reservationItemId) {
         reservationItemService.deleteReservationItem(reservationItemId);
         return ResponseEntity.ok("Reservation item deleted successfully");
     }

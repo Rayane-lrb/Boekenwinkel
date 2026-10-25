@@ -29,19 +29,19 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservationResponseDto> getReservationById(UUID reservationId) {
+    public ResponseEntity<ReservationResponseDto> getReservationById(@RequestParam UUID reservationId) {
         ReservationResponseDto reservation = reservationService.getReservationById(reservationId);
         return ResponseEntity.ok(reservation);
     }
 
     @PostMapping
-    public ResponseEntity<ReservationResponseDto> addReservation(ReservationRequestDto dto, List<ReservationItemRequestDto> itemsDto) {
+    public ResponseEntity<ReservationResponseDto> addReservation(@RequestParam ReservationRequestDto dto, @RequestParam List<ReservationItemRequestDto> itemsDto) {
         ReservationResponseDto reservation = reservationService.createReservation(dto, itemsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservation);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReservation(UUID reservationId) {
+    public ResponseEntity<String> deleteReservation(@RequestParam UUID reservationId) {
         reservationService.deleteReservation(reservationId);
         return ResponseEntity.ok("Deleted reservation successfully");
     }
