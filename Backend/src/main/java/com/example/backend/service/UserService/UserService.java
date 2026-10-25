@@ -9,7 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -51,6 +53,23 @@ public class UserService {
     public void deleteUser(UUID userId) {
         User user = findUserOrThrow(userId);
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public void promoteUser(UUID userId) {
+        User user = findUserOrThrow(userId);
+        Set<String> roles = user.getRoles();
+        roles.add("ROLE_ADMIN");
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void demoteUser(UUID userId) {
+        User user = findUserOrThrow(userId);
+
+        HashSet<String> roles = user.getRoles();
+        roles.remove("ROLE_ADMIN");
+        userRepository.save(user);
     }
 
     private User findUserOrThrow(UUID userId) {

@@ -1,5 +1,6 @@
 package com.example.backend.dto.UserDto;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -8,6 +9,6 @@ public record UserResponseDto(
         String email,
         String firstName,
         String lastName,
-        Set<String> roles
+        HashSet<String> roles
 ) {
 }

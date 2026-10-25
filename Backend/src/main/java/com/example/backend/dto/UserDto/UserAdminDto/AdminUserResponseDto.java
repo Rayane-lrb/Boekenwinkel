@@ -1,6 +1,7 @@
 package com.example.backend.dto.UserDto.UserAdminDto;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ public record AdminUserResponseDto(
         String email,
         String firstName,
         String lastName,
-        Set<String> roles,
+        HashSet<String> roles,
         LocalDateTime createdAt
 ) {
 }

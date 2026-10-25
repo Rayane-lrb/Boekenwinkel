@@ -7,6 +7,7 @@ import com.example.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -31,7 +32,9 @@ public class UserRegister {
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
         user.setPasswordHash(hashedPassword);
-        user.setRoles(Set.of("ROLE_USER"));
+        HashSet<String> roles = new HashSet<>();
+        roles.add("ROLE_USER");
+        user.setRoles(roles);
         User savedUser = userRepository.save(user);
 
         return new UserResponseDto(
