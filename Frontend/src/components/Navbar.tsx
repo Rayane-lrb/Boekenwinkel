@@ -12,8 +12,15 @@ interface NavbarProps {
 }
 
 
-export const Navbar: React.FC<NavbarProps> = ({brandName, items}) => {
+
+export const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const brandName = "Library";
+  const items: NavItem[] = [
+    { label: "Home", path: "/" },
+    { label: "Books", path: "/books" },
+  ];
+  
   return (
     <nav className="mx-auto px-4 py-3 max-w-5xl flex flex-wrap flex-row items-center justify-between md:bg-transparent bg-[#C9A24B]">
       <div>

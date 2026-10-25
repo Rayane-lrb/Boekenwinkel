@@ -7,13 +7,8 @@ import { Navbar } from './components/Navbar'
 
 function App() {
   return (
-  <Navbar 
-  brandName="library"
-  items={[
-    {label: "Home", path: "/"},
-    {label: "Books", path: "/books"}
-  ]}
-  />
+  <Navbar />
+
 
 )}
 
