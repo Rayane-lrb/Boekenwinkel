@@ -26,7 +26,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewResponseDto> getReviewById(UUID reviewId) {
+    public ResponseEntity<ReviewResponseDto> getReviewById(@RequestParam UUID reviewId) {
         ReviewResponseDto review = reviewService.getReviewById(reviewId);
         return ResponseEntity.ok(review);
     }
@@ -37,7 +37,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReview(UUID reviewId) {
+    public ResponseEntity<String> deleteReview(@RequestParam UUID reviewId) {
         reviewService.deleteReview(reviewId);
         return ResponseEntity.ok("Review deleted successfully");
     }
