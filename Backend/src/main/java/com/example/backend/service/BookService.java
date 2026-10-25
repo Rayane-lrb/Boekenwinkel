@@ -65,8 +65,8 @@ public class BookService {
         return mapToResponseDto(book);
     }
 
-    public BookResponseDto updateBook(String isbn, BookRequestDto dto) {
-        Book book = findBookOrThrow(isbn);
+    public BookResponseDto updateBook(BookRequestDto dto) {
+        Book book = findBookOrThrow(dto.getIsbn());
 
         Author author = findAuthorOrThrow(dto.getAuthorId());
 
