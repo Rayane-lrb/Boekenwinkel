@@ -4,8 +4,7 @@ import com.example.backend.dto.UserDto.UserRegisterDto;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.security.JwtUtil;
-import com.example.backend.service.UserService.UserRegister;
-import com.example.backend.service.UserService.UserService;
+import com.example.backend.service.UserService.UserRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
-    UserRegister userRegister;
+    UserRegisterService userRegister;
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired

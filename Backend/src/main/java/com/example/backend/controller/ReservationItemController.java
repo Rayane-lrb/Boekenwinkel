@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/reservation_item")
+@RequestMapping("/reservation_items")
 public class ReservationItemController {
     private ReservationItemService reservationItemService;
 
