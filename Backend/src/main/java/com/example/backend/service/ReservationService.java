@@ -78,7 +78,9 @@ public class ReservationService {
 
     public void deleteReservation(UUID reservationid) {
         Reservation reservation = findReservationOrThrow(reservationid);
-
+        for(ReservationItemResponseDto item : reservation.getReservationItems()) {
+            reservationItemService.deleteReservationItem(item.id());
+        }
         reservationRepository.delete(reservation);
     }
 
