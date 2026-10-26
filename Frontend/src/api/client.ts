@@ -5,11 +5,11 @@ export async function api<T>(
   options: {
     method?: string; 
     body?: unknown;
-    param?: Record<string,string>;
+    params?: Record<string,string>;
     signal?: AbortSignal} = {}
 ): Promise<T> {
 
-  const query = options.param ? "?" + new URLSearchParams(options.param) : "";
+  const query = options.params ? "?" + new URLSearchParams(options.params) : "";
 
   const res = await fetch(BASE_URL + path + query, {
     method: options.method,
