@@ -1,4 +1,17 @@
 const BASE_URL = import.meta.env.BASE_URL;
+const TOKEN_KEY = "";
+
+export const getToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+export const setToken = (token: string): void => {
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+export const clearToken = (): void => {
+  localStorage.removeItem(TOKEN_KEY);
+}
 
 export async function api<T>(
   path: string,
