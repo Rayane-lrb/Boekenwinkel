@@ -7,4 +7,7 @@ export default defineConfig({
     react(),
     tailwindcss() as any,
   ],
+  server: {
+  proxy: { "/api": "http://localhost:8080" },
+},
 })

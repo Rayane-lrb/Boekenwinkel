@@ -54,12 +54,12 @@ public class UserController {
         return ResponseEntity.ok("User deleted successfully");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/promote")
     public ResponseEntity<String> promoteUser(@RequestParam UUID userId) {
         userService.promoteUser(userId);
         return ResponseEntity.ok("User promoted to admin successfully");
     }
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/demote")
     public ResponseEntity<String> demoteUser(@RequestParam UUID userId) {
         userService.demoteUser(userId);
         return ResponseEntity.ok("User demoted successfully");
