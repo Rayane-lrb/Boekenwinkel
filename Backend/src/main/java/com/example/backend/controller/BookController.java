@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/{isbn}")
-    public ResponseEntity<BookResponseDto> getSnackById(@RequestParam String isbn) {
+    public ResponseEntity<BookResponseDto> getSnackById(@PathVariable String isbn) {
         BookResponseDto book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(book);
     }
@@ -48,7 +48,7 @@ public class BookController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteBook(@RequestParam String isbn) {
+    public ResponseEntity<String> deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
         return ResponseEntity.ok("Delete book successfully");
     }
