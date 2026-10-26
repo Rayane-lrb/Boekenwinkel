@@ -4,11 +4,11 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import { Navbar } from './components/Navbar'
+import Layout from './components/Layout'
 
 function App() {
   return (
-  <Navbar />
-
+    <Layout/>
 
 )}
 
