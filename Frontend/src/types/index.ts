@@ -4,6 +4,11 @@ export interface Author {
   lastName: string;
 }
 
+export interface AuthorRequest {
+  firstName: string;
+  lastName: string;
+}
+
 export interface Book {
   isbn: string;
   title: string;
