@@ -52,6 +52,21 @@ export interface ReservationRequest {
   userId: string;
 }
 
+export interface Review {
+  id: string;
+  score: number;
+  text: string;
+  createdAt: string;
+  email: string;
+  isbn: string;
+}
+
+export interface ReviewRequest {
+  isbn: string;
+  score: number;
+  text: string;
+}
+
 export interface User {
   id: string;
   email: string;
