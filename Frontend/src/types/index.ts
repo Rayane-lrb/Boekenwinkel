@@ -12,7 +12,7 @@ export interface AuthorRequest {
 export interface Book {
   isbn: string;
   title: string;
-  desription: string | null;
+  description: string | null;
   price:  number;
   stock: number;
   authorFirstName: string;
@@ -28,16 +28,28 @@ export interface BookRequest {
   authorId: string;
 }
 
-export interface reservationItem {
+export interface ReservationItem {
   id: string;
   isbn: string;
   quantity: number;
   priceAtReservation: number;
 }
 
-export interface reservationItemRequest {
+export interface ReservationItemRequest {
   isbn: string;
   quantity: number;
+}
+
+export interface Reservation {
+  id: string;
+  status: "PENDING" | "CONFIRMED" | "CANCELED";
+  createdAt: string;
+  confirmedAt: string | null;
+  items: ReservationItem[];
+}
+
+export interface ReservationRequest {
+  userId: string;
 }
 
 export interface User {
