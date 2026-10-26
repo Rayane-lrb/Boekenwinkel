@@ -28,6 +28,18 @@ export interface BookRequest {
   authorId: string;
 }
 
+export interface reservationItem {
+  id: string;
+  isbn: string;
+  quantity: number;
+  priceAtReservation: number;
+}
+
+export interface reservationItemRequest {
+  isbn: string;
+  quantity: number;
+}
+
 export interface User {
   id: string;
   email: string;
