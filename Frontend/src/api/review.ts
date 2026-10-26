@@ -5,7 +5,7 @@ export const getReviews = (signal: AbortSignal) =>
   api<Review>("/reviews", { signal });
 
 export const getReview = (id: string, signal: AbortSignal) =>
-  api<Review>(`/reviews/${ encodeURIComponent(id) }` { signal });
+  api<Review>(`/reviews/${ encodeURIComponent(id) }`, { signal });
 
 export const createReview = (input: ReviewRequest) =>
   api<Review>("/reviews", { method: "POST", body: input });
