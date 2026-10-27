@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 interface NavItem {
   label: string;
   path: string;
 }
 
-interface NavbarProps {
-  brandName: string;
-  items: NavItem[];
-}
-
-
-
 export const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const { isLoggedIn, logout } = useAuth();
   const brandName = "Library";
   const items: NavItem[] = [
     { label: "Home", path: "/" },
     { label: "Books", path: "/books" },
+    { label: "Authors", path: "/authors" },
   ];
   
   return (
@@ -39,12 +35,35 @@ export const Navbar: React.FC = () => {
       id="navbar-links"
       className={`${open ? "flex" : "hidden"} text-blue-900 font-semibold md:flex w-full flex-col items-center gap-3 pt-3 md:w-auto md:flex-row md:items-end md:gap-6 md:pt-0`}
       >
-        {items.map((item, index) =>
-        <li key={index}>
+        {items.map((item) =>
+        <li key={item.label}>
           <Link to={item.path}
            onClick={() => setOpen(false)}
            className="block px-1 py-1 md:border-b-2 md:border-solid md:border-transparent hover:border-[#C9A24B] transition duration-200 ease-in-out">{item.label}</Link>
         </li>)}
+        <li>
+          {isLoggedIn ? (
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+                setOpen(false);
+              }}
+              className="block px-1 py-1 md:border-b-2 md:border-solid md:border-transparent hover:border-[#C9A24B] transition duration-200 ease-in-out"
+            >
+              Log out
+            </button>
+          ) : (
+            <div className="flex gap-4">
+              <Link to="/login" onClick={() => setOpen(false)} className="block px-1 py-1 hover:underline">
+                Log in
+              </Link>
+              <Link to="/register" onClick={() => setOpen(false)} className="block px-1 py-1 hover:underline">
+                Register
+              </Link>
+            </div>
+          )}
+        </li>
       </ul>
     </nav>
   );

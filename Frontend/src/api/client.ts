@@ -1,5 +1,5 @@
-const BASE_URL = import.meta.env.BASE_URL;
-const TOKEN_KEY = "";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+const TOKEN_KEY = "authToken";
 
 export const getToken = (): string | null => {
   return localStorage.getItem(TOKEN_KEY);
@@ -23,11 +23,16 @@ export async function api<T>(
 ): Promise<T> {
 
   const query = options.params ? "?" + new URLSearchParams(options.params) : "";
+  const token = getToken();
 
-  const res = await fetch(BASE_URL + path + query, {
+  const url = `${API_BASE_URL.replace(/\/$/, "")}/${path.replace(/^\//, "")}${query}`;
+  const res = await fetch(url, {
     method: options.method,
     signal: options.signal,
-    headers: options.body ? {"Content-Type" : "application/json"} : undefined,
+    headers: {
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: options.body ? JSON.stringify(options.body) : undefined,
   });
 
@@ -38,7 +43,9 @@ export async function api<T>(
     try {
       message = JSON.parse(text).message ?? message;
     }
-    catch {}
+    catch {
+      message = res.statusText;
+    }
       throw new Error(message);
     }
 

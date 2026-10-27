@@ -3,14 +3,14 @@ import { getAuthors, getAuthor, createAuthor, updateAuthor, deleteAuthor } from 
 import type { AuthorRequest } from "../types";
 
 export const useAuthors = () => {
-  useQuery({
+  return useQuery({
     queryKey: ["authors"],
     queryFn: ({ signal }) => getAuthors(signal),
   });
 };
 
 export const useAuthor = (id: string) => {
-  useQuery({
+  return useQuery({
     queryKey: ["authors", id],
     queryFn: ({ signal }) => getAuthor(id, signal),
   });
@@ -22,9 +22,9 @@ export const useCreateAuthor = () => {
   return useMutation({
     mutationFn: (input: AuthorRequest) => createAuthor(input),
     onSuccess: (author) => {
-      queryClient.setQueryData(["authors", author.id], author),
-      queryClient.invalidateQueries({ queryKey: ["authors"] })
-    }
+      queryClient.setQueryData(["authors", author.id], author);
+      queryClient.invalidateQueries({ queryKey: ["authors"] });
+    },
   });
 };
 
@@ -34,9 +34,9 @@ export const useUpdateAuthor = (id: string) => {
   return useMutation({
     mutationFn: (input: AuthorRequest) => updateAuthor(id, input),
     onSuccess: (author) => {
-      queryClient.setQueryData(["authors", author.id], author),
-      queryClient.invalidateQueries({ queryKey: ["authors"]} )
-    }
+      queryClient.setQueryData(["authors", author.id], author);
+      queryClient.invalidateQueries({ queryKey: ["authors"] });
+    },
   });
 };
 
@@ -46,8 +46,8 @@ export const useDeleteAuthor = (id: string) => {
   return useMutation({
     mutationFn: () => deleteAuthor(id),
     onSuccess: (_, id) => {
-      queryClient.removeQueries({ queryKey: ["authors", id]}),
-      queryClient.invalidateQueries({ queryKey: ["authors"] })
-    }
+      queryClient.removeQueries({ queryKey: ["authors", id] });
+      queryClient.invalidateQueries({ queryKey: ["authors"] });
+    },
   });
 };

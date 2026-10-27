@@ -2,11 +2,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface FooterItem {
-  label: string;
-  path: string;
-}
-
 export const Footer: React.FC = () => {
   const brandName = "Library";
 

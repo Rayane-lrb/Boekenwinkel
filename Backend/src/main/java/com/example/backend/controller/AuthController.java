@@ -46,7 +46,7 @@ public class AuthController {
         UserRegisterDto dto = new UserRegisterDto();
         dto.setEmail(user.getEmail());
         dto.setPassword(user.getPasswordHash());
-        dto.setFirstName(user.getPasswordHash());
+        dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
 
         userRegister.resgisterUser(dto);

@@ -1,8 +1,19 @@
 import { api } from "./client";
-import type { LoginRequest, LoginResponse, RegisterRequest } from "../types";
+import type { LoginRequest, RegisterRequest } from "../types";
 
 export const signIn = (input: LoginRequest) =>
-  api<LoginResponse>("/auth/signin", { method: "POST", body: input});
+  api<string>("/auth/signin", {
+    method: "POST",
+    body: { email: input.email, passwordHash: input.password },
+  });
 
 export const signUp = (input: RegisterRequest) =>
-  api<{message: string }>("/auth/signup", { method: "POST", body: input});
+  api<string>("/auth/signup", {
+    method: "POST",
+    body: {
+      email: input.email,
+      passwordHash: input.password,
+      firstName: input.firstName,
+      lastName: input.lastName,
+    },
+  });

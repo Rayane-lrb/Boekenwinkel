@@ -11,7 +11,7 @@ export const createAuthor = (input: AuthorRequest) =>
 api<Author>("/authors", {method: "POST", body: input });
 
 export const updateAuthor = (id: string, input: AuthorRequest) =>
-  api<Author>(`/authors/${ encodeURIComponent(id) }`, {method: "PUT", body: input});
+  api<Author>(`/authors/${ encodeURIComponent(id) }`, { method: "PUT", body: input });
 
 export const deleteAuthor = (id: string) =>
-  api<Author>(`/authors/${ encodeURIComponent(id) }`, { method: "DELETE"});
+  api<string>(`/authors/${ encodeURIComponent(id) }`, { method: "DELETE" });
