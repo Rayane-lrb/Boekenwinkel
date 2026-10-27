@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthor, useDeleteAuthor } from "../../hooks/useAuthors";
+import { useAuth } from "../../hooks/useAuth";
 
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : "Something went wrong. Please try again.";
@@ -10,6 +11,8 @@ export default function AuthorDetailsPage() {
   const navigate = useNavigate();
   const authorQuery = useAuthor(id);
   const deleteAuthor = useDeleteAuthor(id);
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole("ROLE_ADMIN");
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const handleDelete = () => {
@@ -48,27 +51,31 @@ export default function AuthorDetailsPage() {
             </h2>
             <p className="mt-2 text-sm text-slate-500">ID: {authorQuery.data.id}</p>
           </div>
-          {deleteError && (
-            <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-800">
-              Could not delete author: {deleteError}
-            </p>
+          {isAdmin && (
+            <>
+              {deleteError && (
+                <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                  Could not delete author: {deleteError}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
+                <Link
+                  to={`/authors/${encodeURIComponent(authorQuery.data.id)}/edit`}
+                  className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400"
+                >
+                  Edit author
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={deleteAuthor.isPending}
+                  className="rounded-md border border-red-200 px-4 py-2 font-medium text-red-700 hover:bg-red-50 disabled:opacity-60"
+                >
+                  {deleteAuthor.isPending ? "Deleting..." : "Delete author"}
+                </button>
+              </div>
+            </>
           )}
-          <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
-            <Link
-              to={`/authors/${encodeURIComponent(authorQuery.data.id)}/edit`}
-              className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400"
-            >
-              Edit author
-            </Link>
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={deleteAuthor.isPending}
-              className="rounded-md border border-red-200 px-4 py-2 font-medium text-red-700 hover:bg-red-50 disabled:opacity-60"
-            >
-              {deleteAuthor.isPending ? "Deleting..." : "Delete author"}
-            </button>
-          </div>
         </article>
       )}
     </section>

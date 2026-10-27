@@ -9,12 +9,16 @@ interface NavItem {
 
 export const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, hasRole, logout } = useAuth();
   const brandName = "Library";
   const items: NavItem[] = [
     { label: "Home", path: "/" },
     { label: "Books", path: "/books" },
     { label: "Authors", path: "/authors" },
+    ...(hasRole("ROLE_ADMIN") ? [{ label: "Users", path: "/users" }] : []),
+    ...(hasRole("ROLE_USER") || hasRole("ROLE_ADMIN")
+      ? [{ label: "Reservations", path: "/reservations" }]
+      : []),
   ];
   
   return (

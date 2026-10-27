@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBooks } from "../../hooks/useBooks";
+import { useAuth } from "../../hooks/useAuth";
 
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : "Something went wrong. Please try again.";
 
 export default function BooksPage() {
   const booksQuery = useBooks();
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole("ROLE_ADMIN");
   const [search, setSearch] = useState("");
 
   const books = booksQuery.data ?? [];
@@ -23,12 +26,14 @@ export default function BooksPage() {
           <h1 className="text-3xl font-bold text-blue-950">Books</h1>
           <p className="max-w-2xl text-sm text-slate-600">Browse and search the books in your library.</p>
         </div>
-        <Link
-          to="/books/new"
-          className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400"
-        >
-          Add a book
-        </Link>
+        {isAdmin && (
+          <Link
+            to="/books/new"
+            className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400"
+          >
+            Add a book
+          </Link>
+        )}
       </header>
 
       <section className="space-y-4">

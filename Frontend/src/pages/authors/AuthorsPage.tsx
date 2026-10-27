@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthors } from "../../hooks/useAuthors";
+import { useAuth } from "../../hooks/useAuth";
 
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : "Something went wrong. Please try again.";
 
 export default function AuthorsPage() {
   const authorsQuery = useAuthors();
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole("ROLE_ADMIN");
   const [search, setSearch] = useState("");
 
   const authors = authorsQuery.data ?? [];
@@ -22,12 +25,14 @@ export default function AuthorsPage() {
           <h1 className="text-3xl font-bold text-blue-950">Authors</h1>
           <p className="max-w-2xl text-sm text-slate-600">Browse and manage the authors in your library.</p>
         </div>
-        <Link
-          to="/authors/new"
-          className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400"
-        >
-          Add an author
-        </Link>
+        {isAdmin && (
+          <Link
+            to="/authors/new"
+            className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400"
+          >
+            Add an author
+          </Link>
+        )}
       </header>
 
       <section className="space-y-4">
