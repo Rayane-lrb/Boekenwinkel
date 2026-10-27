@@ -4,14 +4,14 @@ import type { UserRegisterRequest, UserUpdateRequest } from "../types";
 
 
 export const useUsers = () => {
-  useQuery({
+  return useQuery({
     queryKey: ["users"],
     queryFn: ({ signal }) => getUsers(signal)
-  })
+  });
 };
 
 export const useUser = (id: string) => {
-  useQuery({
+  return useQuery({
     queryKey: ["users", id],
     queryFn: ({ signal }) => getUser(id, signal)
   });
@@ -23,8 +23,8 @@ export const useCreateUser = () => {
   return useMutation({
     mutationFn: (input: UserRegisterRequest) => createUser(input),
     onSuccess: (user) => {
-      queryClient.setQueryData(["users", user.id], user),
-      queryClient.invalidateQueries({ queryKey: ["users"] })
+      queryClient.setQueryData(["users", user.id], user);
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     }
   });
 };
@@ -35,8 +35,8 @@ export const useUpdateUser = (id: string) => {
   return useMutation({
     mutationFn: (input: UserUpdateRequest) => updateUser(id, input),
     onSuccess: (user) => {
-      queryClient.setQueryData(["users", id], user),
-      queryClient.invalidateQueries({ queryKey: ["users"] })
+      queryClient.setQueryData(["users", id], user);
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     }
   });
 };
@@ -47,8 +47,8 @@ export const useDeleteUser = (id: string) => {
   return useMutation({
     mutationFn: () => deleteUser(id),
     onSuccess: (_, id) => {
-      queryClient.removeQueries({ queryKey: ["users", id] }),
-      queryClient.invalidateQueries({ queryKey: ["users"] })
+      queryClient.removeQueries({ queryKey: ["users", id] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     }
   });
 };

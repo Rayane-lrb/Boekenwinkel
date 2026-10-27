@@ -8,7 +8,7 @@ export const getUser = (id: string, signal: AbortSignal) =>
   api<User>(`/users/${encodeURIComponent(id)}`, { signal });
 
 export const createUser = (input: UserRegisterRequest) =>
-  api<User>("/books", { method: "POST", body: input});
+  api<User>("/users", { method: "POST", body: input});
 
 export const updateUser = (id: string, input: UserUpdateRequest) =>
   api<User>(`/users/${ encodeURIComponent(id) }`, { method: "PUT", body: input});
