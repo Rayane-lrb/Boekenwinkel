@@ -1,11 +1,9 @@
 package com.example.backend.repository;
 
 import com.example.backend.model.Author;
-import com.example.backend.model.Book;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.AutoConfigureDataJpa;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -15,7 +13,6 @@ import org.testcontainers.mysql.MySQLContainer;
 
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -55,14 +52,15 @@ class AuthorRepositoryTest {
         authorRepository.saveAndFlush(author);
         entityManager.clear();
 
-        Author toEdit = authorRepository.getById(author.getId());
+        Author toEdit = authorRepository.findById(author.getId()).orElseThrow();
         toEdit.setFirstName("Samy");
         toEdit.setLastName("Poppy");
         authorRepository.saveAndFlush(toEdit);
         entityManager.clear();
 
-        assertEquals("Samy", authorRepository.getById(author.getId()).getFirstName());
-        assertEquals("Poppy", authorRepository.getById(author.getId()).getLastName());
+        Author reloaded = authorRepository.findById(author.getId()).orElseThrow();
+        assertEquals("Samy", reloaded.getFirstName());
+        assertEquals("Poppy", reloaded.getLastName());
     }
 
     @Test
