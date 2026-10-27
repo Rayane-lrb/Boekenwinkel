@@ -2,7 +2,7 @@ import { api } from "./client";
 import type { Reservation, ReservationItem, ReservationRequest } from "../types";
 
 export const getReservations = (signal: AbortSignal) =>
-  api<Reservation>("/reservations", { signal });
+  api<Reservation[]>("/reservations", { signal });
 
 export const getReservation = (id: string, signal: AbortSignal) =>
   api<Reservation>(`/reservations/${ encodeURIComponent(id) }`, { signal });
@@ -12,4 +12,3 @@ export const createReservation = (input: [reservationRequest: ReservationRequest
 
 export const deleteReservation = (id: string) =>
   api<{ message: string }>(`/reservations/${ encodeURIComponent(id) }`, { method: "DELETE" });
-

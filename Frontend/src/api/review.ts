@@ -2,7 +2,7 @@ import { api } from "./client";
 import {type Review, type ReviewRequest } from "../types";
 
 export const getReviews = (signal: AbortSignal) =>
-  api<Review>("/reviews", { signal });
+  api<Review[]>("/reviews", { signal });
 
 export const getReview = (id: string, signal: AbortSignal) =>
   api<Review>(`/reviews/${ encodeURIComponent(id) }`, { signal });
