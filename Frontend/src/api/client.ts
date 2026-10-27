@@ -1,6 +1,16 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 const TOKEN_KEY = "authToken";
 
+export class ApiError extends Error {
+  readonly status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 export const getToken = (): string | null => {
   return localStorage.getItem(TOKEN_KEY);
 }
@@ -46,7 +56,7 @@ export async function api<T>(
     catch {
       message = res.statusText;
     }
-      throw new Error(message);
+      throw new ApiError(message, res.status);
     }
 
   try {

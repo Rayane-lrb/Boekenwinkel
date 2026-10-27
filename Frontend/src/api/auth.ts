@@ -1,5 +1,5 @@
 import { api } from "./client";
-import type { LoginRequest, RegisterRequest } from "../types";
+import type { LoginRequest, RegisterRequest, User } from "../types";
 
 export const signIn = (input: LoginRequest) =>
   api<string>("/auth/signin", {
@@ -17,3 +17,5 @@ export const signUp = (input: RegisterRequest) =>
       lastName: input.lastName,
     },
   });
+
+export const getCurrentUser = () => api<User>("/auth/me");
