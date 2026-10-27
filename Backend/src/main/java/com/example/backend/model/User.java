@@ -35,7 +35,7 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
-    private HashSet<String> roles = new HashSet<>();
+    private Set<String> roles = new HashSet<>();
 
     public List<Review> getReviews() {
         return reviews;
@@ -107,11 +107,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public HashSet<String> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(HashSet<String> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }

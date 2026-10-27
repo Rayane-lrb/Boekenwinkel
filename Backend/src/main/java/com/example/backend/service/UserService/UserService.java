@@ -1,11 +1,9 @@
 package com.example.backend.service.UserService;
 
-import com.example.backend.dto.UserDto.UserRegisterDto;
 import com.example.backend.dto.UserDto.UserResponseDto;
 import com.example.backend.dto.UserDto.UserUpdateDto;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +17,9 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -36,6 +32,15 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDto getUserById(UUID userId) {
         User user = findUserOrThrow(userId);
+        return mapToResponseDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponseDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
         return mapToResponseDto(user);
     }
 
@@ -67,7 +72,7 @@ public class UserService {
     public void demoteUser(UUID userId) {
         User user = findUserOrThrow(userId);
 
-        HashSet<String> roles = user.getRoles();
+        Set<String> roles = user.getRoles();
         roles.remove("ROLE_ADMIN");
         userRepository.save(user);
     }
@@ -83,7 +88,7 @@ public class UserService {
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getRoles()
+                new HashSet<>(user.getRoles())
         );
     }
 }

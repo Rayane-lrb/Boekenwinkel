@@ -41,7 +41,7 @@ public class UserRegisterService {
                 savedUser.getEmail(),
                 savedUser.getFirstName(),
                 savedUser.getLastName(),
-                savedUser.getRoles()
+                new HashSet<>(savedUser.getRoles())
         );
     }
 

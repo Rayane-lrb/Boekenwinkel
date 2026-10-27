@@ -31,37 +31,37 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<UserResponseDto> getUserById(@RequestParam UUID userId) {
-        UserResponseDto user = userService.getUserById(userId);
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable UUID id) {
+        UserResponseDto user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> addUser(@RequestParam UserRegisterDto dto) {
+    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRegisterDto dto) {
         UserResponseDto user = userRegisterService.resgisterUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> editUser(@RequestParam UUID userId, @RequestParam UserUpdateDto dto) {
-        UserResponseDto updatedUser = userService.updateUser(userId, dto);
+    public ResponseEntity<UserResponseDto> editUser(@PathVariable UUID id, @RequestBody UserUpdateDto dto) {
+        UserResponseDto updatedUser = userService.updateUser(id, dto);
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@RequestParam UUID userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
+        userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
 
     @PutMapping("/{id}/promote")
-    public ResponseEntity<String> promoteUser(@RequestParam UUID userId) {
-        userService.promoteUser(userId);
+    public ResponseEntity<String> promoteUser(@PathVariable UUID id) {
+        userService.promoteUser(id);
         return ResponseEntity.ok("User promoted to admin successfully");
     }
     @PutMapping("/{id}/demote")
-    public ResponseEntity<String> demoteUser(@RequestParam UUID userId) {
-        userService.demoteUser(userId);
+    public ResponseEntity<String> demoteUser(@PathVariable UUID id) {
+        userService.demoteUser(id);
         return ResponseEntity.ok("User demoted successfully");
     }
 }
