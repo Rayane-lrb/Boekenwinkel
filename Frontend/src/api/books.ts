@@ -14,4 +14,4 @@ export const updateBook = (input: BookRequest) =>
   api<Book>(`/books/${ encodeURIComponent(input.isbn)}`, { method: "PUT", body: input });
 
 export const deleteBook = (isbn: string) =>
-  api<Book>(`/authors/${ encodeURIComponent(isbn) }`, {method: "DELETE", params: { isbn }});
+  api<Book>(`/books/${ encodeURIComponent(isbn) }`, {method: "DELETE", params: { isbn }});
