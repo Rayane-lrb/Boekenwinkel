@@ -49,7 +49,7 @@ export interface Reservation {
 }
 
 export interface ReservationRequest {
-  userId: string;
+  items: ReservationItemRequest[];
 }
 
 export interface Review {

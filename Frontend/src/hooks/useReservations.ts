@@ -5,7 +5,7 @@ import {
   getReservation,
   getReservations,
 } from "../api/reservation";
-import type { ReservationItem, ReservationRequest } from "../types";
+import type { ReservationRequest } from "../types";
 
 export const useReservations = () =>
   useQuery({
@@ -23,8 +23,7 @@ export const useCreateReservation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: [reservationRequest: ReservationRequest, reservationItems: ReservationItem[]]) =>
-      createReservation(input),
+    mutationFn: (input: ReservationRequest) => createReservation(input),
     onSuccess: (reservation) => {
       queryClient.setQueryData(["reservations", reservation.id], reservation);
       queryClient.invalidateQueries({ queryKey: ["reservations"] });

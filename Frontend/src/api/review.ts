@@ -8,7 +8,11 @@ export const getReview = (id: string, signal: AbortSignal) =>
   api<Review>(`/reviews/${ encodeURIComponent(id) }`, { signal });
 
 export const createReview = (input: ReviewRequest) =>
-  api<Review>("/reviews", { method: "POST", body: input });
+  api<Review>("/reviews", {
+    method: "POST",
+    params: { isbn: input.isbn },
+    body: { bookIsbn: input.isbn, score: input.score, text: input.text },
+  });
 
 export const deleteReview = (id: string) => 
   api<{ message: string }>(`/reviews/${ encodeURIComponent(id) }`, { method: "DELETE" });

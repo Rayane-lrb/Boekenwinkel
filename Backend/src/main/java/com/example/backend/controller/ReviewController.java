@@ -6,6 +6,7 @@ import com.example.backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,19 +27,19 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewResponseDto> getReviewById(@RequestParam UUID reviewId) {
-        ReviewResponseDto review = reviewService.getReviewById(reviewId);
+    public ResponseEntity<ReviewResponseDto> getReviewById(@PathVariable UUID id) {
+        ReviewResponseDto review = reviewService.getReviewById(id);
         return ResponseEntity.ok(review);
     }
     @PostMapping
-    public ResponseEntity<ReviewResponseDto> addReview(@RequestParam String isbn, @RequestParam ReviewRequestDto dto) {
+    public ResponseEntity<ReviewResponseDto> addReview(@RequestParam String isbn, @Valid @RequestBody ReviewRequestDto dto) {
         ReviewResponseDto review = reviewService.createReview(isbn, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(review);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReview(@RequestParam UUID reviewId) {
-        reviewService.deleteReview(reviewId);
+    public ResponseEntity<String> deleteReview(@PathVariable UUID id) {
+        reviewService.deleteReview(id);
         return ResponseEntity.ok("Review deleted successfully");
     }
 }

@@ -5,17 +5,17 @@ import com.example.backend.dto.ReservationDto.ReservationResponseDto;
 import com.example.backend.dto.ReservationItemDto.ReservationItemRequestDto;
 import com.example.backend.dto.ReservationItemDto.ReservationItemResponseDto;
 import com.example.backend.model.Reservation;
+import com.example.backend.model.ReservationItem;
 import com.example.backend.model.User;
-import com.example.backend.repository.ReservationItemRepository;
 import com.example.backend.repository.ReservationRepository;
 import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,25 +24,19 @@ import java.util.UUID;
 public class ReservationService {
     private final UserRepository userRepository;
 
-    private final ReservationItemRepository reservationItemRepository;
-
     private final ReservationRepository reservationRepository;
 
     private final ReservationItemService reservationItemService;
 
     @Autowired
-    public ReservationService(UserRepository userRepository, ReservationItemRepository reservationItemRepository, ReservationRepository reservationRepository, ReservationItemService reservationItemService) {
+    public ReservationService(UserRepository userRepository, ReservationRepository reservationRepository, ReservationItemService reservationItemService) {
         this.userRepository = userRepository;
-        this.reservationItemRepository = reservationItemRepository;
         this.reservationRepository = reservationRepository;
         this.reservationItemService = reservationItemService;
     }
 
-    public ReservationResponseDto createReservation(ReservationRequestDto dto, List<ReservationItemRequestDto> reservationItemDtos) {
-        String currentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<ReservationItemResponseDto> items = new ArrayList<>();
-
-        User currentUser = userRepository.findByEmail(currentEmail);
+    public ReservationResponseDto createReservation(ReservationRequestDto dto) {
+        User currentUser = userRepository.findByEmail(currentEmail());
         if (currentUser == null) {
             throw new RuntimeException("Signed in user not found");
         }
@@ -52,18 +46,20 @@ public class ReservationService {
         reservation.setCreatedAt(LocalDateTime.now());
         reservation.setUser(currentUser);
 
-        for (ReservationItemRequestDto item : reservationItemDtos) {
-            ReservationItemResponseDto responseItem = reservationItemService.createReservationItem(item);
-            items.add(responseItem);
+        for (ReservationItemRequestDto item : dto.getItems()) {
+            ReservationItem reservationItem = reservationItemService.createReservationItem(reservation, item);
+            reservation.getReservationItems().add(reservationItem);
         }
-        reservation.setReservationItems(items);
 
-        return mapToResponseDto(reservation);
+        return mapToResponseDto(reservationRepository.save(reservation));
     }
 
     @Transactional(readOnly = true)
     public List<ReservationResponseDto> getAllReservations() {
-        return reservationRepository.findAll().stream()
+        List<Reservation> reservations = isAdmin()
+                ? reservationRepository.findAll()
+                : reservationRepository.findAllByUser_Email(currentEmail());
+        return reservations.stream()
                 .map(this::mapToResponseDto)
                 .toList();
     }
@@ -71,14 +67,13 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public ReservationResponseDto getReservationById(UUID reservationId) {
         Reservation reservation = findReservationOrThrow(reservationId);
+        ensureOwnerOrAdmin(reservation);
         return mapToResponseDto(reservation);
     }
 
     public void deleteReservation(UUID reservationid) {
         Reservation reservation = findReservationOrThrow(reservationid);
-        for(ReservationItemResponseDto item : reservation.getReservationItems()) {
-            reservationItemService.deleteReservationItem(item.id());
-        }
+        ensureOwnerOrAdmin(reservation);
         reservationRepository.delete(reservation);
     }
 
@@ -87,13 +82,35 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
     }
 
+    private void ensureOwnerOrAdmin(Reservation reservation) {
+        if (!isAdmin() && !reservation.getUser().getEmail().equals(currentEmail())) {
+            throw new AccessDeniedException("You are not allowed to access this reservation");
+        }
+    }
+
+    private boolean isAdmin() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+    }
+
+    private String currentEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
     private ReservationResponseDto mapToResponseDto(Reservation reservation) {
         return new ReservationResponseDto(
                 reservation.getId(),
                 reservation.getStatus(),
                 reservation.getCreatedAt(),
                 reservation.getConfirmedAt(),
-                reservation.getReservationItems()
+                reservation.getReservationItems().stream()
+                        .map(item -> new ReservationItemResponseDto(
+                                item.getId(),
+                                item.getBook().getIsbn(),
+                                item.getQuantity(),
+                                item.getPriceAtReservation()
+                        ))
+                        .toList()
         );
     }
 }

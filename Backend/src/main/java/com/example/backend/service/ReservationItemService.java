@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.ReservationItemDto.ReservationItemRequestDto;
 import com.example.backend.dto.ReservationItemDto.ReservationItemResponseDto;
 import com.example.backend.model.Book;
+import com.example.backend.model.Reservation;
 import com.example.backend.model.ReservationItem;
 import com.example.backend.repository.BookRepository;
 import com.example.backend.repository.ReservationItemRepository;
@@ -25,22 +26,16 @@ public class ReservationItemService {
         this.bookRepository = bookRepository;
     }
 
-    public ReservationItemResponseDto createReservationItem(ReservationItemRequestDto dto) {
-        Book book = bookRepository.findByIsbnContainsIgnoreCase(dto.getIsbn());
+    public ReservationItem createReservationItem(Reservation reservation, ReservationItemRequestDto dto) {
+        Book book = findBookOrThrow(dto.getIsbn());
 
         ReservationItem reservationItem = new ReservationItem();
         reservationItem.setBook(book);
+        reservationItem.setReservation(reservation);
         reservationItem.setQuantity(dto.getQuantity());
         reservationItem.setPriceAtReservation(calculatePriceForQuantity(book.getPrice(), dto.getQuantity()));
 
-        ReservationItem savedReservationItem = reservationItemRepository.save(reservationItem);
-
-        return new ReservationItemResponseDto(
-                savedReservationItem.getId(),
-                savedReservationItem.getBook().getIsbn(),
-                savedReservationItem.getQuantity(),
-                savedReservationItem.getPriceAtReservation()
-        );
+        return reservationItem;
     }
 
     @Transactional(readOnly = true)

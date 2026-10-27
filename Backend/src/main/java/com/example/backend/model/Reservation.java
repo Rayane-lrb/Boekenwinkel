@@ -1,8 +1,6 @@
 package com.example.backend.model;
 
-import com.example.backend.dto.ReservationItemDto.ReservationItemResponseDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,8 +28,8 @@ public class Reservation {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private List<ReservationItemResponseDto> reservationItems = new ArrayList<>();
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservationItem> reservationItems = new ArrayList<>();
 
     public Reservation() {
     }
@@ -83,11 +81,11 @@ public class Reservation {
         this.user = user;
     }
 
-    public List<ReservationItemResponseDto> getReservationItems() {
+    public List<ReservationItem> getReservationItems() {
         return reservationItems;
     }
 
-    public void setReservationItems(List<ReservationItemResponseDto> reservationItems) {
+    public void setReservationItems(List<ReservationItem> reservationItems) {
         this.reservationItems = reservationItems;
     }
 }

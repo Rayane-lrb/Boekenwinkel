@@ -8,6 +8,8 @@ import com.example.backend.model.User;
 import com.example.backend.repository.BookRepository;
 import com.example.backend.repository.ReviewRepository;
 import com.example.backend.repository.UserRepository;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,7 @@ public class ReviewService {
     public ReviewResponseDto createReview(String isbn, ReviewRequestDto dto) {
         String currentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userRepository.findByEmail(currentEmail);
-        Book book = bookRepository.findById(dto.getBookIsbn()).orElse(null);
+        Book book = bookRepository.findById(isbn).orElse(null);
 
         if(currentUser == null) {
             throw new RuntimeException("Signed in user not found");
@@ -68,6 +70,12 @@ public class ReviewService {
 
     public void deleteReview(UUID reviewId) {
         Review review = findReviewOrThrow(reviewId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin && !review.getUser().getEmail().equals(authentication.getName())) {
+            throw new AccessDeniedException("You are not allowed to delete this review");
+        }
         reviewRepository.delete(review);
 
     }

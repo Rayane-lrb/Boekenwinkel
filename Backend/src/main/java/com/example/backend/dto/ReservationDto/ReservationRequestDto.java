@@ -1,25 +1,25 @@
 package com.example.backend.dto.ReservationDto;
 
 import com.example.backend.dto.ReservationItemDto.ReservationItemRequestDto;
-import com.example.backend.dto.ReservationItemDto.ReservationItemResponseDto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ReservationRequestDto {
 
-    private UUID userId;
+    @NotEmpty(message = "Reservation must contain at least one item")
+    private List<@Valid ReservationItemRequestDto> items = new ArrayList<>();
 
     public ReservationRequestDto() {
     }
 
-    public UUID getUserId() {
-        return userId;
+    public List<ReservationItemRequestDto> getItems() {
+        return items;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setItems(List<ReservationItemRequestDto> items) {
+        this.items = items;
     }
-
 }
