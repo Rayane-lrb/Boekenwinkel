@@ -28,7 +28,7 @@
   };
 
   export const useUpdateBook = () => {
-    const queryClient = new QueryClient();
+    const queryClient = useQueryClient();
 
     return useMutation({
       mutationFn: updateBook,
@@ -40,7 +40,7 @@
   };
 
   export const useDeleteBook = () => {
-    const queryClient = new QueryClient();
+    const queryClient = useQueryClient();
 
     return useMutation({
       mutationFn: deleteBook,
