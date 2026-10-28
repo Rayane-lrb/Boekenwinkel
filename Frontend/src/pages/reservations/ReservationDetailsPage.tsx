@@ -1,5 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import { useReservation } from "../../hooks/useReservations";
+import { useReservation, useUpdateReservationStatus } from "../../hooks/useReservations";
+import { useBooks } from "../../hooks/useBooks";
+import { useAuth } from "../../hooks/useAuth";
+import { useState } from "react";
+import type { ReservationStatusUpdate } from "../../types";
 
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : "Something went wrong. Please try again.";
@@ -7,6 +11,21 @@ const errorMessage = (error: unknown) =>
 export default function ReservationDetailsPage() {
   const { id = "" } = useParams();
   const reservationQuery = useReservation(id);
+  const booksQuery = useBooks();
+  const updateStatus = useUpdateReservationStatus();
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole("ROLE_ADMIN");
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const booksByIsbn = new Map((booksQuery.data ?? []).map((book) => [book.isbn, book]));
+
+  const handleStatusUpdate = async (status: ReservationStatusUpdate) => {
+    setStatusError(null);
+    try {
+      await updateStatus.mutateAsync({ id, status });
+    } catch (error) {
+      setStatusError(errorMessage(error));
+    }
+  };
 
   return (
     <section className="space-y-6 py-8 text-blue-900">
@@ -30,7 +49,42 @@ export default function ReservationDetailsPage() {
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#9A7626]">Order</p>
             <h2 className="text-2xl font-bold text-blue-950">Reservation #{reservationQuery.data.id.slice(0, 8)}</h2>
             <p className="text-sm text-slate-500">Status: {reservationQuery.data.status}</p>
+            {isAdmin && (
+              <p className="text-sm text-slate-600">
+                Reserved by: <span className="font-semibold text-blue-950">
+                  {reservationQuery.data.userFirstName} {reservationQuery.data.userLastName}
+                </span>
+              </p>
+            )}
           </div>
+
+          {isAdmin && reservationQuery.data.status === "PENDING" && (
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  disabled={updateStatus.isPending}
+                  onClick={() => handleStatusUpdate("CONFIRMED")}
+                  className="rounded-md bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {updateStatus.isPending ? "Updating..." : "Confirm reservation"}
+                </button>
+                <button
+                  type="button"
+                  disabled={updateStatus.isPending}
+                  onClick={() => handleStatusUpdate("CANCELED")}
+                  className="rounded-md border border-red-300 px-4 py-2 font-semibold text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Cancel reservation
+                </button>
+              </div>
+              {statusError && (
+                <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                  Could not update reservation status: {statusError}
+                </p>
+              )}
+            </div>
+          )}
 
           <dl className="grid gap-4 border-y border-slate-100 py-5 sm:grid-cols-2">
             <div>
@@ -57,11 +111,16 @@ export default function ReservationDetailsPage() {
                   <li key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <p className="font-medium text-blue-950">ISBN: {item.isbn}</p>
+                        <p className="font-medium text-blue-950">
+                          {booksByIsbn.get(item.isbn)?.title ?? `ISBN: ${item.isbn}`}
+                        </p>
+                        {booksByIsbn.has(item.isbn) && (
+                          <p className="text-xs text-slate-500">ISBN: {item.isbn}</p>
+                        )}
                         <p className="text-sm text-slate-600">Quantity: {item.quantity}</p>
                       </div>
                       <p className="text-sm font-semibold text-[#9A7626]">
-                        €{item.priceAtReservation.toFixed(2)} each
+                        €{item.priceAtReservation.toFixed(2)} line total
                       </p>
                     </div>
                   </li>

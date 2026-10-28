@@ -42,11 +42,16 @@ export interface ReservationItemRequest {
 
 export interface Reservation {
   id: string;
-  status: "PENDING" | "CONFIRMED" | "CANCELED";
+  status: ReservationStatus;
   createdAt: string;
   confirmedAt: string | null;
+  userFirstName: string;
+  userLastName: string;
   items: ReservationItem[];
 }
+
+export type ReservationStatus = "PENDING" | "CONFIRMED" | "CANCELED";
+export type ReservationStatusUpdate = Exclude<ReservationStatus, "PENDING">;
 
 export interface ReservationRequest {
   items: ReservationItemRequest[];

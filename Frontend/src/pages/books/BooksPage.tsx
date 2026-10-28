@@ -2,15 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBooks } from "../../hooks/useBooks";
 import { useAuth } from "../../hooks/useAuth";
+import { useReservationCart } from "../../hooks/useReservationCart";
 
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : "Something went wrong. Please try again.";
 
 export default function BooksPage() {
   const booksQuery = useBooks();
-  const { hasRole } = useAuth();
+  const { hasRole, isLoggedIn } = useAuth();
+  const { addBook, items: cartItems } = useReservationCart();
   const isAdmin = hasRole("ROLE_ADMIN");
   const [search, setSearch] = useState("");
+  const [cartMessage, setCartMessage] = useState<string | null>(null);
 
   const books = booksQuery.data ?? [];
   const filteredBooks = books.filter((book) => {
@@ -37,6 +40,11 @@ export default function BooksPage() {
       </header>
 
       <section className="space-y-4">
+        {cartMessage && (
+          <p role="status" className="rounded-md bg-green-50 p-3 text-sm text-green-800">
+            {cartMessage}
+          </p>
+        )}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-blue-950">All books</h2>
@@ -92,6 +100,27 @@ export default function BooksPage() {
                 >
                   View details
                 </Link>
+                {isLoggedIn ? (
+                  <button
+                    type="button"
+                    disabled={book.stock <= (cartItems.find((item) => item.book.isbn === book.isbn)?.quantity ?? 0)}
+                    onClick={() => setCartMessage(
+                      addBook(book)
+                        ? `${book.title} added to your reservation list.`
+                        : `${book.title} has no more stock available.`,
+                    )}
+                    className="mt-2 rounded-md bg-[#C9A24B] px-3 py-2 text-center text-sm font-semibold text-blue-950 hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    Add to reservation
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="mt-2 rounded-md bg-[#C9A24B] px-3 py-2 text-center text-sm font-semibold text-blue-950 hover:bg-amber-400"
+                  >
+                    Log in to reserve
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

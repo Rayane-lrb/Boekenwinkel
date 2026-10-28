@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useReservationCart } from "../hooks/useReservationCart";
 
 interface NavItem {
   label: string;
@@ -10,6 +11,7 @@ interface NavItem {
 export const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { isLoggedIn, hasRole, logout } = useAuth();
+  const { itemCount, clearCart } = useReservationCart();
   const brandName = "Library";
   const items: NavItem[] = [
     { label: "Home", path: "/" },
@@ -17,7 +19,7 @@ export const Navbar: React.FC = () => {
     { label: "Authors", path: "/authors" },
     ...(hasRole("ROLE_ADMIN") ? [{ label: "Users", path: "/users" }] : []),
     ...(hasRole("ROLE_USER") || hasRole("ROLE_ADMIN")
-      ? [{ label: "Reservations", path: "/reservations" }]
+      ? [{ label: `Reservations${itemCount > 0 ? ` (${itemCount})` : ""}`, path: "/reservations" }]
       : []),
   ];
   
@@ -50,6 +52,7 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => {
+                clearCart();
                 logout();
                 setOpen(false);
               }}

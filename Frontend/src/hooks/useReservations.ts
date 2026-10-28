@@ -4,8 +4,9 @@ import {
   deleteReservation,
   getReservation,
   getReservations,
+  updateReservationStatus,
 } from "../api/reservation";
-import type { ReservationRequest } from "../types";
+import type { ReservationRequest, ReservationStatusUpdate } from "../types";
 
 export const useReservations = () =>
   useQuery({
@@ -27,6 +28,22 @@ export const useCreateReservation = () => {
     onSuccess: (reservation) => {
       queryClient.setQueryData(["reservations", reservation.id], reservation);
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
+    },
+  });
+};
+
+export const useUpdateReservationStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: ReservationStatusUpdate }) =>
+      updateReservationStatus(id, status),
+    onSuccess: (reservation) => {
+      queryClient.setQueryData(["reservations", reservation.id], reservation);
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+      if (reservation.status === "CONFIRMED") {
+        queryClient.invalidateQueries({ queryKey: ["books"] });
+      }
     },
   });
 };

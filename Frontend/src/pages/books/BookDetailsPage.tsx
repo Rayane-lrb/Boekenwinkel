@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDeleteBook, useBook } from "../../hooks/useBooks";
 import { useCreateReview, useReviews } from "../../hooks/useReviews";
 import { useAuth } from "../../hooks/useAuth";
+import { useReservationCart } from "../../hooks/useReservationCart";
 
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : "Something went wrong. Please try again.";
@@ -14,12 +15,14 @@ export default function BookDetailsPage() {
   const reviewsQuery = useReviews();
   const createReview = useCreateReview();
   const { isLoggedIn, hasRole } = useAuth();
+  const { addBook, items: cartItems, itemCount } = useReservationCart();
   const isAdmin = hasRole("ROLE_ADMIN");
   const deleteBook = useDeleteBook();
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [reviewError, setReviewError] = useState<string | null>(null);
   const [reviewSuccess, setReviewSuccess] = useState<string | null>(null);
   const [reviewForm, setReviewForm] = useState({ score: 5, text: "" });
+  const [cartMessage, setCartMessage] = useState<string | null>(null);
 
   const bookReviews = (reviewsQuery.data ?? []).filter((review) => review.isbn === isbn);
   const averageRating =
@@ -103,6 +106,40 @@ export default function BookDetailsPage() {
             <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">
               {bookQuery.data.description || "No description available."}
             </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5">
+            {isLoggedIn ? (
+              <>
+                <button
+                  type="button"
+                  disabled={
+                    bookQuery.data.stock <=
+                    (cartItems.find((item) => item.book.isbn === bookQuery.data.isbn)?.quantity ?? 0)
+                  }
+                  onClick={() => setCartMessage(
+                    addBook(bookQuery.data!)
+                      ? "Book added to your reservation list."
+                      : "No more stock is available for this book.",
+                  )}
+                  className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Add to reservation
+                </button>
+                {itemCount > 0 && (
+                  <Link to="/reservations" className="text-sm font-medium text-[#9A7626] hover:underline">
+                    View reservation list ({itemCount})
+                  </Link>
+                )}
+              </>
+            ) : (
+              <Link to="/login" className="rounded-md bg-[#C9A24B] px-4 py-2 font-semibold text-blue-950 hover:bg-amber-400">
+                Log in to reserve
+              </Link>
+            )}
+            {cartMessage && (
+              <p role="status" className="w-full text-sm text-green-800">{cartMessage}</p>
+            )}
           </div>
 
           <div className="space-y-4 border-t border-slate-100 pt-5">
