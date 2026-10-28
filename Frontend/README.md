@@ -1,75 +1,51 @@
-# React + TypeScript + Vite
+# Boekenwinkel frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+De frontend van Boekenwinkel is een single-page applicatie gebouwd met React, TypeScript en Vite. De UI gebruikt React Router voor navigatie, TanStack React Query voor server-state en Tailwind CSS voor styling.
 
-Currently, two official plugins are available:
+## Vereisten
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20.19+ of 22.12+
+- npm
+- De Boekenwinkel-backend, standaard bereikbaar op `http://localhost:8080`
 
-## React Compiler
+## Installeren en starten
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Voer vanuit deze map uit:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Vite toont de lokale URL in de terminal, standaard `http://localhost:5173`. In development worden aanvragen op `/api` doorgestuurd naar de backend op poort `8080`; het prefix `/api` wordt daarbij verwijderd.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Voor een andere API-basis-URL maak je lokaal een `.env`-bestand aan met:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```dotenv
+VITE_API_URL=http://localhost:8080
 ```
+
+Commit geen `.env`-bestanden of geheimen.
+
+## Scripts
+
+| Commando | Beschrijving |
+| --- | --- |
+| `npm run dev` | Start de Vite-ontwikkelserver |
+| `npm run build` | Typecheckt en maakt een productiebuild |
+| `npm run preview` | Serveert de productiebuild lokaal |
+| `npm run lint` | Voert ESLint uit |
+
+## API-endpoints
+
+De frontend gebruikt de REST API van de backend voor authenticatie, boeken, auteurs, recensies, reserveringen, reserveringsitems en gebruikersbeheer. De volledige endpointcatalogus — inclusief HTTP-methoden, rollen, requestvoorbeelden en responses — staat in de [API-documentatie in de project-README](../README.md#rest-api).
+
+## Belangrijkste dependencies
+
+- `react` en `react-dom`: UI-framework.
+- `react-router-dom`: client-side routes.
+- `@tanstack/react-query`: ophalen, cachen en muteren van serverdata.
+- `tailwindcss` en `@tailwindcss/vite`: styling en Vite-integratie.
+- `vite` en `@vitejs/plugin-react`: development server en build tooling.
+- `typescript`: statische typecontrole.
+- `eslint` en de React/TypeScript ESLint-plugins: linting.
