@@ -314,3 +314,10 @@ Testcontainers-tests kunnen een actieve Docker-installatie nodig hebben.
 ## Licentie
 
 Er is momenteel geen licentie-informatie in deze repository opgenomen.
+
+
+## Bronnen
+-https://spring.io/projects/spring-boot
+-https://react.dev/learn 
+-https://developer.mozilla.org/fr/ 
+-copilot (for debugging + react pages)
