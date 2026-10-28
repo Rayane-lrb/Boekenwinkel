@@ -24,7 +24,7 @@ public class BookRequestDto {
     private BigDecimal price;
 
     @Positive(message = "Stock must be positive")
-    private int Stock;
+    private int stock;
 
     @NotNull(message = "Author ID is required")
     private UUID authorId;
@@ -65,11 +65,11 @@ public class BookRequestDto {
     }
 
     public int getStock() {
-        return Stock;
+        return stock;
     }
 
     public void setStock(int stock) {
-        Stock = stock;
+        this.stock = stock;
     }
 
     public UUID getAuthorId() {

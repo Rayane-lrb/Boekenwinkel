@@ -11,6 +11,8 @@ public record ReservationResponseDto(
         String status,
         LocalDateTime createdAt,
         LocalDateTime confirmedAt,
+        String userFirstName,
+        String userLastName,
         List<ReservationItemResponseDto> items
 ) {
 }

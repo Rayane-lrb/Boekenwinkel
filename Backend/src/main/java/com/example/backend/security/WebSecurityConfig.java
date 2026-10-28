@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/books/**", "/authors/**", "/reviews/**").permitAll()
                                 .requestMatchers("/users/**").hasRole("ADMIN")
                                 .requestMatchers("/books/**", "/authors/**", "/reservation_items/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/*/status").hasRole("ADMIN")
                                 .requestMatchers("/reviews/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers("/reservations/**").hasAnyRole("USER", "ADMIN")
                                 .anyRequest().denyAll()

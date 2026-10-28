@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.ReservationDto.ReservationRequestDto;
 import com.example.backend.dto.ReservationDto.ReservationResponseDto;
+import com.example.backend.dto.ReservationDto.ReservationStatusRequest;
 import com.example.backend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,14 @@ public class ReservationController {
     public ResponseEntity<ReservationResponseDto> addReservation(@Valid @RequestBody ReservationRequestDto dto) {
         ReservationResponseDto reservation = reservationService.createReservation(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservation);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ReservationResponseDto> updateReservationStatus(
+            @PathVariable UUID id,
+            @Valid @RequestBody ReservationStatusRequest request
+    ) {
+        return ResponseEntity.ok(reservationService.updateReservationStatus(id, request.status()));
     }
 
     @DeleteMapping("/{id}")
